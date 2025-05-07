@@ -21,6 +21,10 @@ export default function Search() {
                     try {
                               setTampilan(cardSkeleton());
 
+                              if (prompt === "" || prompt === "") {
+                                        setTampilan(cardError("Masukkan nama surah terlebih dahulu"));
+                                        return "";
+                              }
                               const res = await fetch("/api/gemini", {
                                         method: "POST",
                                         headers: { "Content-Type": "application/json" },
@@ -42,7 +46,7 @@ export default function Search() {
                               setTampilan(cardTemplate());
                               
                     } catch (e) {
-                              setTampilan(cardError(e));
+                              setTampilan(cardError(e.message));
                     }
           };
 
@@ -134,12 +138,12 @@ export default function Search() {
                     return (
                               <div className="flex items-center justify-center gap-3 flex-col my-5">
                               <img
-                                        src="/assets/not-search.gif"
-                                        alt="not search animation gif"
+                                        src="/assets/computer.gif"
+                                        alt="error animation gif"
                                         className="w-[200px] h-[200px] object-cover"
                               />
-                              <span className="font-extrabold sm:text-[2rem] text-red-500 text-[1.6rem]">
-                                        {e.message}
+                              <span className="font-extrabold sm:text-[2rem] text-red-400 text-[1.6rem]">
+                                        {e}
                               </span>
                               </div>
                     );
@@ -173,6 +177,8 @@ export default function Search() {
                                                   <Button
                                                   icon="pi pi-search"
                                                   className="!px-7 !rounded-sm"
+                                                  tooltip="Tekan 2 kali agar hasil sesuai yang diinginkan"
+                                                  tooltipOptions={{ position:'top' }}
                                                   onClick={() => getResultPrompt()}
                                                   />
                                         </div>
